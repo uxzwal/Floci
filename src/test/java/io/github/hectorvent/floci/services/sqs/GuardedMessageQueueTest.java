@@ -97,7 +97,7 @@ class GuardedMessageQueueTest {
     }
 
     @Test
-    void removeByReceiptHandleInvalidReturnsFalse() {
+    void removeByReceiptHandleInvalidReturnsEmpty() {
         assertFalse(queue.removeByReceiptHandle("nonexistent").isPresent());
     }
 
