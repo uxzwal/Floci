@@ -84,16 +84,10 @@ public class EcsContainerManager {
                 specBuilder.withMemoryMb(def.getMemory());
             }
 
-            // Add port mappings. Publish to host only in native mode; in Docker
-            // mode ECS consumers reach containers via the docker network IP.
+            // Add port mappings
             if (def.getPortMappings() != null) {
-                boolean publishToHost = !containerDetector.isRunningInContainer();
                 for (PortMapping pm : def.getPortMappings()) {
-                    if (publishToHost) {
-                        specBuilder.withDynamicPort(pm.containerPort());
-                    } else {
-                        specBuilder.withExposedPort(pm.containerPort());
-                    }
+                    specBuilder.withDynamicPort(pm.containerPort());
                 }
             }
 
@@ -189,7 +183,7 @@ public class EcsContainerManager {
             int hostPort = pm.containerPort();
             String bindIp = "0.0.0.0";
 
-            if (!containerDetector.isRunningInContainer() && binding != null && binding.length > 0) {
+            if (binding != null && binding.length > 0) {
                 hostPort = Integer.parseInt(binding[0].getHostPortSpec());
                 if (binding[0].getHostIp() != null && !binding[0].getHostIp().isBlank()) {
                     bindIp = binding[0].getHostIp();
