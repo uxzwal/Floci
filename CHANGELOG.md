@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **route53:** Route53 Phase 1 — hosted zones with auto-created SOA + NS records, `ChangeResourceRecordSets` (CREATE/UPSERT/DELETE with atomic batch validation), `ListResourceRecordSets`, change tracking (always INSYNC), health checks (create/get/list/update/delete), and per-resource tagging via `ChangeTagsForResource` / `ListTagsForResource`
+- **eventbridge:** Archive and Replay support — `CreateArchive`, `DescribeArchive`, `UpdateArchive`, `DeleteArchive`, `ListArchives`, `StartReplay`, `DescribeReplay`, `CancelReplay`, `ListReplays`; events captured automatically to matching archives and replayed on demand ([#702](https://github.com/floci-io/floci/pull/702))
+- **scheduler:** `TagResource`, `UntagResource`, `ListTagsForResource` for schedule groups ([#700](https://github.com/floci-io/floci/pull/700))
+- **sqs, dynamodb:** TRACE-level payload logging for request and response bodies to aid debugging ([#697](https://github.com/floci-io/floci/pull/697))
+
+### Fixed
+
+- **appconfig:** use capital `"Tags"` body key in `TagResource` / `ListTagsForResource` to match AWS SDK wire format ([#704](https://github.com/floci-io/floci/pull/704))
+- **docker:** respect `DOCKER_HOST` env var and handle bare `host:port` values without a URI scheme ([#705](https://github.com/floci-io/floci/pull/705))
+- **ec2:** `AssociateRouteTable` now returns `<associationState>` in the response; `DescribeRouteTables` supports the `association.route-table-association-id` filter; `DescribeTags` correctly applies `resource-id`, `resource-type`, `key`, and `value` filters ([#706](https://github.com/floci-io/floci/pull/706))
+
 ## [1.5.12] - 2026-05-04
 
 ### Added

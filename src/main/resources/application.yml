@@ -239,3 +239,5 @@ floci:
       enabled: true
     autoscaling:
       enabled: true
+    route53:
+      enabled: true

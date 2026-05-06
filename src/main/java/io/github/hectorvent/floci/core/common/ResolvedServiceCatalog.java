@@ -10,6 +10,7 @@ import io.github.hectorvent.floci.services.eks.EksController;
 import io.github.hectorvent.floci.services.pipes.PipesController;
 import io.github.hectorvent.floci.services.lambda.LambdaController;
 import io.github.hectorvent.floci.services.opensearch.OpenSearchController;
+import io.github.hectorvent.floci.services.route53.Route53Controller;
 import io.github.hectorvent.floci.services.ses.SesController;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -220,7 +221,11 @@ public class ResolvedServiceCatalog {
                 descriptor("autoscaling", "autoscaling", config.services().autoscaling().enabled(), true,
                         "autoscaling", config.storage().mode(), 5000L, AwsNamespaces.AUTOSCALING, ServiceProtocol.QUERY,
                         protocols(ServiceProtocol.QUERY),
-                        Set.of(), Set.of("autoscaling"), Set.of(), Set.of())
+                        Set.of(), Set.of("autoscaling"), Set.of(), Set.of()),
+                descriptor("route53", "route53", config.services().route53().enabled(), true,
+                        "route53", config.storage().mode(), 5000L, null, ServiceProtocol.REST_XML,
+                        protocols(ServiceProtocol.REST_XML),
+                        Set.of(), Set.of("route53"), Set.of(), Set.of(Route53Controller.class))
         ));
     }
 
