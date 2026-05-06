@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import java.io.StringReader;
 import java.net.URI;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -425,6 +426,79 @@ public class Route53Controller {
                 .end("Limit")
                 .elem("Count", 0L)
                 .end("GetAccountLimitResponse")
+                .build();
+        return Response.ok(xml, XML).build();
+    }
+
+    @GET
+    @Path("/healthcheck/{HealthCheckId}/status")
+    public Response getHealthCheckStatus(@PathParam("HealthCheckId") String id) {
+        try {
+            service.getHealthCheck(id);
+            String now = Instant.now().toString();
+            String xml = new XmlBuilder()
+                    .start("GetHealthCheckStatusResponse", NS)
+                    .start("HealthCheckObservations")
+                    .start("HealthCheckObservation")
+                    .elem("IPAddress", "1.2.3.4")
+                    .elem("Region", "us-east-1")
+                    .start("StatusReport")
+                    .elem("Status", "Success: HTTP Status Code 200, OK")
+                    .elem("CheckedTime", now)
+                    .end("StatusReport")
+                    .end("HealthCheckObservation")
+                    .end("HealthCheckObservations")
+                    .end("GetHealthCheckStatusResponse")
+                    .build();
+            return Response.ok(xml, XML).build();
+        } catch (AwsException e) {
+            return xmlErrorResponse(e);
+        }
+    }
+
+    @GET
+    @Path("/hostedzone/{Id}/dnssec")
+    public Response getDnssec(@PathParam("Id") String id) {
+        try {
+            service.getHostedZone(id);
+            String xml = new XmlBuilder()
+                    .start("GetDNSSECResponse", NS)
+                    .start("Status")
+                    .elem("ServeSignature", "NOT_SIGNING")
+                    .elem("StatusMessage", "Zone is not signing")
+                    .end("Status")
+                    .start("KeySigningKeys")
+                    .end("KeySigningKeys")
+                    .end("GetDNSSECResponse")
+                    .build();
+            return Response.ok(xml, XML).build();
+        } catch (AwsException e) {
+            return xmlErrorResponse(e);
+        }
+    }
+
+    @GET
+    @Path("/hostedzonelimit/{HostedZoneId}/{Type}")
+    public Response getHostedZoneLimit(@PathParam("HostedZoneId") String zoneId,
+                                        @PathParam("Type") String type) {
+        try {
+            service.getHostedZone(zoneId);
+        } catch (AwsException e) {
+            return xmlErrorResponse(e);
+        }
+        long value = switch (type) {
+            case "MAX_RRSETS_BY_ZONE" -> 10000L;
+            case "MAX_VPCS_ASSOCIATED_BY_ZONE" -> 100L;
+            default -> 100L;
+        };
+        String xml = new XmlBuilder()
+                .start("GetHostedZoneLimitResponse", NS)
+                .start("Limit")
+                .elem("Type", type)
+                .elem("Value", value)
+                .end("Limit")
+                .elem("Count", 0L)
+                .end("GetHostedZoneLimitResponse")
                 .build();
         return Response.ok(xml, XML).build();
     }
