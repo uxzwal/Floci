@@ -240,3 +240,5 @@ floci:
       enabled: true
     autoscaling:
       enabled: true
+    transfer:
+      enabled: true

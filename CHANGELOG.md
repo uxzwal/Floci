@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **transfer:** AWS Transfer Family management-plane API — server lifecycle (`CreateServer`, `DescribeServer`, `DeleteServer`, `ListServers`, `StartServer`, `StopServer`, `UpdateServer`), user management (`CreateUser`, `DescribeUser`, `DeleteUser`, `ListUsers`, `UpdateUser`), SSH key management (`ImportSshPublicKey`, `DeleteSshPublicKey`), and tagging (`TagResource`, `UntagResource`, `ListTagsForResource`)
+
 ## [1.5.12] - 2026-05-04
 
 ### Added

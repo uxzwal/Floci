@@ -220,7 +220,11 @@ public class ResolvedServiceCatalog {
                 descriptor("autoscaling", "autoscaling", config.services().autoscaling().enabled(), true,
                         "autoscaling", config.storage().mode(), 5000L, AwsNamespaces.AUTOSCALING, ServiceProtocol.QUERY,
                         protocols(ServiceProtocol.QUERY),
-                        Set.of(), Set.of("autoscaling"), Set.of(), Set.of())
+                        Set.of(), Set.of("autoscaling"), Set.of(), Set.of()),
+                descriptor("transfer", "transfer", config.services().transfer().enabled(), true,
+                        "transfer", config.storage().mode(), 5000L, null, ServiceProtocol.JSON,
+                        protocols(ServiceProtocol.JSON),
+                        Set.of("TransferService."), Set.of("transfer"), Set.of(), Set.of())
         ));
     }
 
