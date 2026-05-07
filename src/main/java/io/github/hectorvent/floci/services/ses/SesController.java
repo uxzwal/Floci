@@ -72,6 +72,11 @@ public class SesController {
                 throw new AwsException("BadRequestException", "EmailIdentity is required.", 400);
             }
 
+            if (sesService.getIdentityVerificationAttributes(emailIdentity, region) != null) {
+                throw new AwsException("AlreadyExistsException",
+                        "Email identity " + emailIdentity + " already exist.", 400);
+            }
+
             Identity identity = emailIdentity.contains("@")
                     ? sesService.verifyEmailIdentity(emailIdentity, region)
                     : sesService.verifyDomainIdentity(emailIdentity, region);
@@ -126,6 +131,10 @@ public class SesController {
     public Response deleteEmailIdentity(@Context HttpHeaders headers,
                                         @PathParam("emailIdentity") String emailIdentity) {
         String region = regionResolver.resolveRegion(headers);
+        if (sesService.getIdentityVerificationAttributes(emailIdentity, region) == null) {
+            throw new AwsException("NotFoundException",
+                    "Email identity " + emailIdentity + " does not exist.", 404);
+        }
         sesService.deleteIdentity(emailIdentity, region);
         LOG.infov("SES V2 DeleteEmailIdentity: {0}", emailIdentity);
         return Response.ok(objectMapper.createObjectNode()).build();
@@ -152,6 +161,51 @@ public class SesController {
         } catch (AwsException e) {
             throw remapV1Exception(e);
         } catch (Exception e) {
+            throw new AwsException("BadRequestException", e.getMessage(), 400);
+        }
+    }
+
+    // ────────────────── Identity MAIL FROM ──────────────────────────
+
+    @PUT
+    @Path("/identities/{emailIdentity}/mail-from")
+    public Response putEmailIdentityMailFromAttributes(@Context HttpHeaders headers,
+                                                        @PathParam("emailIdentity") String emailIdentity,
+                                                        String body) {
+        String region = regionResolver.resolveRegion(headers);
+        try {
+            if (body == null || body.isBlank()) {
+                throw new AwsException("BadRequestException", "Request body is required.", 400);
+            }
+            JsonNode request = objectMapper.readTree(body);
+            requireJsonObject(request);
+            JsonNode mailFromDomainNode = request.path("MailFromDomain");
+            if (mailFromDomainNode.isMissingNode()) {
+                throw new AwsException("BadRequestException",
+                        "MailFromDomain is required (use an empty string to clear the existing setting).", 400);
+            }
+            if (!mailFromDomainNode.isNull() && !mailFromDomainNode.isTextual()) {
+                throw new AwsException("BadRequestException",
+                        "MailFromDomain must be a JSON string (or null).", 400);
+            }
+            String mailFromDomain = mailFromDomainNode.isNull()
+                    ? ""
+                    : mailFromDomainNode.asText("");
+            JsonNode behaviorNode = request.path("BehaviorOnMxFailure");
+            String behaviorV2 = null;
+            if (!behaviorNode.isMissingNode() && !behaviorNode.isNull()) {
+                if (!behaviorNode.isTextual()) {
+                    throw new AwsException("BadRequestException",
+                            "BehaviorOnMxFailure must be a JSON string.", 400);
+                }
+                behaviorV2 = behaviorNode.asText(null);
+            }
+            String behaviorV1 = v2BehaviorToV1(behaviorV2);
+            sesService.setMailFromDomain(emailIdentity, mailFromDomain, behaviorV1, region);
+            return Response.ok(objectMapper.createObjectNode()).build();
+        } catch (AwsException e) {
+            throw remapV1Exception(e);
+        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
             throw new AwsException("BadRequestException", e.getMessage(), 400);
         }
     }
@@ -650,14 +704,39 @@ public class SesController {
         result.set("DkimAttributes", buildDkimAttributes(identity));
 
         ObjectNode mailFromAttributes = result.putObject("MailFromAttributes");
-        mailFromAttributes.put("MailFromDomain", "");
-        mailFromAttributes.put("MailFromDomainStatus", "NOT_STARTED");
-        mailFromAttributes.put("BehaviorOnMxFailure", "USE_DEFAULT_VALUE");
+        String mailFromDomain = identity.getMailFromDomain();
+        mailFromAttributes.put("MailFromDomain", mailFromDomain == null ? "" : mailFromDomain);
+        mailFromAttributes.put("MailFromDomainStatus",
+                mailFromDomain == null ? "NOT_STARTED" : toV2Status(identity.getMailFromDomainStatus()));
+        mailFromAttributes.put("BehaviorOnMxFailure",
+                v1BehaviorToV2(identity.getBehaviorOnMxFailure()));
 
         result.putObject("Policies");
         result.putArray("Tags");
 
         return result;
+    }
+
+    private static String v1BehaviorToV2(String v1) {
+        if ("RejectMessage".equals(v1)) {
+            return "REJECT_MESSAGE";
+        }
+        return "USE_DEFAULT_VALUE";
+    }
+
+    private static String v2BehaviorToV1(String v2) {
+        if (v2 == null) {
+            return null;
+        }
+        if ("REJECT_MESSAGE".equals(v2)) {
+            return "RejectMessage";
+        }
+        if ("USE_DEFAULT_VALUE".equals(v2)) {
+            return "UseDefaultValue";
+        }
+        throw new AwsException("BadRequestException",
+                "1 validation error detected: Value at 'behaviorOnMxFailure' failed to satisfy "
+                        + "constraint: Member must satisfy enum value set: [REJECT_MESSAGE, USE_DEFAULT_VALUE]", 400);
     }
 
     private ObjectNode buildDkimAttributes(Identity identity) {

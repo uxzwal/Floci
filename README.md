@@ -72,6 +72,7 @@
 | CodeBuild (real Docker build execution, S3 artifacts, CloudWatch logs) | ✅ | ❌ |
 | CodeDeploy (Lambda traffic shifting, lifecycle hooks, auto-rollback) | ✅ | ❌ |
 | Auto Scaling (groups, launch configs, reconciler, ELB v2 integration) | ✅ | ❌ |
+| SSM Run Command (SendCommand + real agent polling via ec2messages) | ✅ | ❌ |
 | Native binary | ✅ ~40 MB | ❌ |
 
 **Broad AWS coverage. Free forever.**
@@ -208,6 +209,7 @@ All default images are configurable via environment variables, useful for pinnin
 | Service | How it works | Notable features |
 |---|---|---|
 | **SSM Parameter Store** | In-process | Version history, labels, SecureString, tagging |
+| **SSM Run Command** | In-process | `SendCommand`, `GetCommandInvocation`, `ListCommands`, `CancelCommand`; `DescribeInstanceInformation`; `ec2messages` polling protocol so the real `amazon-ssm-agent` running inside EC2 containers can register, receive commands, and report output |
 | **SQS** | In-process | Standard & FIFO, DLQ, visibility timeout, batch, tagging |
 | **SNS** | In-process | Topics, subscriptions, SQS / Lambda / HTTP delivery, tagging |
 | **S3** | In-process | Versioning, multipart upload, pre-signed URLs, Object Lock, event notifications |
@@ -245,7 +247,7 @@ All default images are configurable via environment variables, useful for pinnin
 | **AppConfigData** | In-process | Configuration sessions, dynamic configuration retrieval |
 | **Bedrock Runtime** | In-process (stub) | Dummy Converse and InvokeModel responses for local development; streaming returns 501 |
 | **EKS** | **Real Docker containers** (mock mode available) | Clusters, tagging; real mode starts k3s per cluster with a live Kubernetes API server |
-| **ELB v2** | In-process | Application and Network Load Balancers, target groups, listeners, path/host-based routing rules, tags |
+| **ELB v2** | In-process | Application and Network Load Balancers, target groups, listeners, path/host-based routing rules, Lambda targets (ALB→Lambda event format), tags |
 | **CodeBuild** | In-process + **real Docker containers** | Projects, report groups, source credentials; `StartBuild` runs real Docker containers, streams logs to CloudWatch, uploads artifacts to S3 via `docker cp` (works in Docker-in-Docker) |
 | **CodeDeploy** | In-process + **Lambda traffic shifting** | Applications, deployment groups, deployment configs; 17 `CodeDeployDefault.*` built-ins pre-seeded; `CreateDeployment` shifts Lambda alias `RoutingConfig` weights, invokes lifecycle hooks, auto-rolls back on failure |
 | **Auto Scaling** | In-process + **background reconciler** | Launch configurations, auto scaling groups with min/max/desired capacity; background loop (10 s) calls `RunInstances` / `TerminateInstances` to meet desired capacity; lifecycle hooks, scaling policies, ELB v2 target group auto-registration |

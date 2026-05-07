@@ -65,7 +65,7 @@ public class PipesTargetInvoker {
         if (targetArn.contains(":lambda:") || targetArn.contains(":function:")) {
             invokeLambda(targetArn, payload, region);
         } else if (targetArn.contains(":sqs:")) {
-            invokeSqs(targetArn, payload);
+            invokeSqs(targetArn, payload, region);
         } else if (targetArn.contains(":sns:")) {
             invokeSns(targetArn, payload, region);
         } else if (targetArn.contains(":events:")) {
@@ -84,9 +84,9 @@ public class PipesTargetInvoker {
         LOG.debugv("Pipe delivered to Lambda: {0}", arn);
     }
 
-    private void invokeSqs(String arn, String payload) {
+    private void invokeSqs(String arn, String payload, String region) {
         String queueUrl = AwsArnUtils.arnToQueueUrl(arn, baseUrl);
-        sqsService.sendMessage(queueUrl, payload, 0);
+        sqsService.sendMessage(queueUrl, payload, 0, region);
         LOG.debugv("Pipe delivered to SQS: {0}", arn);
     }
 

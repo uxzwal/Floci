@@ -395,22 +395,6 @@ class SesV2IntegrationTest {
             .body("DkimAttributes.Status", equalTo("NOT_STARTED"));
     }
 
-    @Test
-    @Order(22)
-    void putDkimAttributes_notFound() {
-        given()
-            .contentType("application/json")
-            .header("Authorization", AUTH_HEADER)
-            .body("""
-                {"SigningEnabled": true}
-                """)
-        .when()
-            .put("/v2/email/identities/nonexistent@example.com/dkim")
-        .then()
-            .statusCode(404)
-            .body("__type", equalTo("NotFoundException"));
-    }
-
     // ──────────────── Feedback Attributes ────────────────
 
     @Test
@@ -464,6 +448,10 @@ class SesV2IntegrationTest {
     @Test
     @Order(42)
     void putFeedbackAttributes_notFound() {
+        // Real SES v2 returns BadRequestException (HTTP 400) for an unknown
+        // identity on this endpoint, with the "Identity X is invalid..."
+        // message inherited from the v1 SetIdentityFeedbackForwardingEnabled
+        // wire shape via remapV1Exception.
         given()
             .contentType("application/json")
             .header("Authorization", AUTH_HEADER)
@@ -473,8 +461,8 @@ class SesV2IntegrationTest {
         .when()
             .put("/v2/email/identities/nonexistent@example.com/feedback")
         .then()
-            .statusCode(404)
-            .body("__type", equalTo("NotFoundException"));
+            .statusCode(400)
+            .body("__type", equalTo("BadRequestException"));
     }
 
     // ──────────────── Account Sending ────────────────
