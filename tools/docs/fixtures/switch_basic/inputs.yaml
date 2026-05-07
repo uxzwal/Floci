@@ -1,0 +1,2 @@
+sources:
+  - { file: FixtureSwitchHandler.java, mode: switch }

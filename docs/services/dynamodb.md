@@ -5,36 +5,42 @@
 
 ## Supported Actions
 
-| Action | Description |
-|---|---|
-| `CreateTable` | Create a table with indexes |
-| `DeleteTable` | Delete a table |
-| `DescribeTable` | Get table metadata |
-| `ListTables` | List all tables |
-| `UpdateTable` | Update throughput, indexes, streams |
-| `PutItem` | Write an item |
-| `GetItem` | Read an item by primary key |
-| `DeleteItem` | Delete an item |
-| `UpdateItem` | Partially update an item |
-| `Query` | Query by partition key with optional filter |
-| `Scan` | Full table scan with optional filter |
-| `BatchWriteItem` | Write/delete up to 25 items across tables |
-| `BatchGetItem` | Read up to 100 items across tables |
-| `TransactWriteItems` | ACID write transaction |
-| `TransactGetItems` | ACID read transaction |
-| `DescribeTimeToLive` | Get TTL configuration |
-| `UpdateTimeToLive` | Enable/disable TTL on a table |
-| `TagResource` | Tag a table |
-| `UntagResource` | Remove tags |
-| `ListTagsOfResource` | List tags |
-| `DescribeContinuousBackups` | Get PITR backup configuration |
-| `UpdateContinuousBackups` | Enable/disable PITR |
-| `DescribeKinesisStreamingDestination` | List Kinesis streaming destinations |
-| `EnableKinesisStreamingDestination` | Enable Kinesis streaming for a table |
-| `DisableKinesisStreamingDestination` | Disable Kinesis streaming for a table |
-| `ExportTableToPointInTime` | Export table data to S3 as gzip NDJSON |
-| `DescribeExport` | Get export status and metadata |
-| `ListExports` | List exports, optionally filtered by table ARN |
+<!-- floci:actions:start -->
+| Action |
+| --- |
+| `CreateTable` |
+| `DeleteTable` |
+| `DescribeTable` |
+| `ListTables` |
+| `PutItem` |
+| `GetItem` |
+| `DeleteItem` |
+| `UpdateItem` |
+| `Query` |
+| `Scan` |
+| `BatchWriteItem` |
+| `BatchGetItem` |
+| `UpdateTable` |
+| `DescribeTimeToLive` |
+| `UpdateTimeToLive` |
+| `DescribeContinuousBackups` |
+| `UpdateContinuousBackups` |
+| `TransactWriteItems` |
+| `TransactGetItems` |
+| `TagResource` |
+| `UntagResource` |
+| `ListTagsOfResource` |
+| `EnableKinesisStreamingDestination` |
+| `DisableKinesisStreamingDestination` |
+| `DescribeKinesisStreamingDestination` |
+| `ExportTableToPointInTime` |
+| `DescribeExport` |
+| `ListExports` |
+| `ListStreams` |
+| `DescribeStream` |
+| `GetShardIterator` |
+| `GetRecords` |
+<!-- floci:actions:end -->
 
 ## Streams {#streams}
 

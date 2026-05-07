@@ -5,20 +5,29 @@
 
 ## Supported Actions
 
-| Action | Description |
-|---|---|
-| `PutParameter` | Create or update a parameter |
-| `GetParameter` | Get a single parameter by name |
-| `GetParameters` | Get multiple parameters by name |
-| `GetParametersByPath` | Get all parameters under a path prefix |
-| `DeleteParameter` | Delete a parameter |
-| `DeleteParameters` | Delete multiple parameters |
-| `GetParameterHistory` | List all versions of a parameter |
-| `DescribeParameters` | List parameters with optional filters |
-| `LabelParameterVersion` | Attach a label to a specific version |
-| `AddTagsToResource` | Tag a parameter |
-| `ListTagsForResource` | List tags on a parameter |
-| `RemoveTagsFromResource` | Remove tags from a parameter |
+<!-- floci:actions:start -->
+| Action |
+| --- |
+| `PutParameter` |
+| `GetParameter` |
+| `GetParameters` |
+| `GetParametersByPath` |
+| `DeleteParameter` |
+| `DeleteParameters` |
+| `GetParameterHistory` |
+| `DescribeParameters` |
+| `LabelParameterVersion` |
+| `AddTagsToResource` |
+| `ListTagsForResource` |
+| `RemoveTagsFromResource` |
+| `SendCommand` |
+| `GetCommandInvocation` |
+| `ListCommands` |
+| `ListCommandInvocations` |
+| `CancelCommand` |
+| `DescribeInstanceInformation` |
+| `UpdateInstanceInformation` |
+<!-- floci:actions:end -->
 
 ## Configuration
 

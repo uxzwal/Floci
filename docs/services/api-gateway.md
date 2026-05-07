@@ -2,42 +2,136 @@
 
 Floci supports both API Gateway v1 (REST APIs) and API Gateway v2 (HTTP APIs).
 
+## Supported Actions
+
+<!-- floci:actions:start -->
+| Action |
+| --- |
+| `GetMethodResponse` |
+| `PutMethodResponse` |
+| `GetIntegrationResponse` |
+| `PutIntegrationResponse` |
+| `GetAuthorizer` |
+| `GetAuthorizers` |
+| `GetStage` |
+| `GetStages` |
+| `CreateRestApi` |
+| `PutRestApi` |
+| `GetRestApis` |
+| `GetRestApi` |
+| `UpdateRestApi` |
+| `DeleteRestApi` |
+| `GetResources` |
+| `GetResource` |
+| `UpdateResource` |
+| `CreateResource` |
+| `DeleteResource` |
+| `PutMethod` |
+| `GetMethod` |
+| `UpdateMethod` |
+| `DeleteMethod` |
+| `PutIntegration` |
+| `GetIntegration` |
+| `UpdateIntegration` |
+| `DeleteIntegration` |
+| `CreateDeployment` |
+| `GetDeployments` |
+| `GetDeployment` |
+| `CreateStage` |
+| `UpdateStage` |
+| `DeleteStage` |
+| `CreateAuthorizer` |
+| `CreateApiKey` |
+| `GetApiKeys` |
+| `CreateUsagePlan` |
+| `GetUsagePlans` |
+| `DeleteUsagePlan` |
+| `CreateUsagePlanKey` |
+| `GetUsagePlanKeys` |
+| `GetUsagePlanKey` |
+| `DeleteUsagePlanKey` |
+| `CreateRequestValidator` |
+| `GetRequestValidators` |
+| `GetRequestValidator` |
+| `DeleteRequestValidator` |
+| `CreateModel` |
+| `GetModels` |
+| `GetModel` |
+| `DeleteModel` |
+| `CreateDomainName` |
+| `GetDomainNames` |
+| `GetDomainName` |
+| `DeleteDomainName` |
+| `CreateBasePathMapping` |
+| `GetBasePathMappings` |
+| `GetBasePathMapping` |
+| `DeleteBasePathMapping` |
+| `CreateApi` |
+| `GetApis` |
+| `GetApi` |
+| `DeleteApi` |
+| `UpdateApi` |
+| `CreateRoute` |
+| `GetRoutes` |
+| `GetRoute` |
+| `DeleteRoute` |
+| `UpdateRoute` |
+| `CreateIntegration` |
+| `GetIntegrations` |
+| `UpdateV2Integration` |
+| `CreateRouteResponse` |
+| `GetRouteResponse` |
+| `GetRouteResponses` |
+| `UpdateRouteResponse` |
+| `DeleteRouteResponse` |
+| `CreateIntegrationResponse` |
+| `GetIntegrationResponses` |
+| `UpdateIntegrationResponse` |
+| `DeleteIntegrationResponse` |
+| `CreateV2Authorizer` |
+| `GetV2Authorizers` |
+| `GetV2Authorizer` |
+| `DeleteV2Authorizer` |
+| `UpdateV2Authorizer` |
+| `CreateV2Stage` |
+| `GetV2Stages` |
+| `GetV2Stage` |
+| `DeleteV2Stage` |
+| `UpdateV2Stage` |
+| `CreateV2Deployment` |
+| `GetV2Deployments` |
+| `GetV2Deployment` |
+| `DeleteV2Deployment` |
+| `UpdateV2Deployment` |
+| `CreateV2Model` |
+| `GetV2Models` |
+| `GetV2Model` |
+| `UpdateV2Model` |
+| `DeleteV2Model` |
+| `TagResource` |
+| `UntagResource` |
+| `GetTagsForResource` |
+| `DeleteAuthorizer` |
+| `UpdateAuthorizer` |
+| `DeleteDeployment` |
+| `UpdateDeployment` |
+| `UpdateModel` |
+| `GetTags` |
+<!-- floci:actions:end -->
+
 ## API Gateway v1 (REST APIs) {#v1}
 
 **Protocol:** REST JSON
 **Endpoint:** `http://localhost:4566/restapis/...`
 
-### Supported Operations
-
-| Category | Operations |
-|---|---|
-| **APIs** | CreateRestApi, ImportRestApi, PutRestApi, GetRestApi, GetRestApis, UpdateRestApi, DeleteRestApi |
-| **Resources** | CreateResource, GetResource, GetResources, UpdateResource, DeleteResource |
-| **Methods** | PutMethod, GetMethod, UpdateMethod, DeleteMethod |
-| **Method Responses** | PutMethodResponse, GetMethodResponse |
-| **Integrations** | PutIntegration, GetIntegration, UpdateIntegration, DeleteIntegration |
-| **Integration Responses** | PutIntegrationResponse, GetIntegrationResponse |
-| **Deployments** | CreateDeployment, GetDeployments |
-| **Stages** | CreateStage, GetStage, GetStages, UpdateStage, DeleteStage |
-| **Authorizers** | CreateAuthorizer, GetAuthorizer, GetAuthorizers |
-| **API Keys** | CreateApiKey, GetApiKeys |
-| **Usage Plans** | CreateUsagePlan, GetUsagePlans, DeleteUsagePlan |
-| **Usage Plan Keys** | CreateUsagePlanKey, GetUsagePlanKey, GetUsagePlanKeys, DeleteUsagePlanKey |
-| **Request Validators** | CreateRequestValidator, GetRequestValidator, GetRequestValidators, DeleteRequestValidator |
-| **Models** | CreateModel, GetModel, GetModels, DeleteModel |
-| **Domain Names** | CreateDomainName, GetDomainName, GetDomainNames, DeleteDomainName |
-| **Base Path Mappings** | CreateBasePathMapping, GetBasePathMapping, GetBasePathMappings, DeleteBasePathMapping |
-| **Tags** | TagResource, UntagResource, GetTags (ListTagsForResource) |
-
 ### Not Implemented
 
 These management-plane operations have no handler in v1. Calls will return `404` or an error:
 
-- Deployment detail and lifecycle: `GetDeployment`, `UpdateDeployment`, `DeleteDeployment`
-- Authorizer lifecycle: `UpdateAuthorizer`, `DeleteAuthorizer`, `TestInvokeAuthorizer`
+- Authorizer lifecycle: `TestInvokeAuthorizer`
 - API key detail: `GetApiKey`, `UpdateApiKey`, `DeleteApiKey`, `ImportApiKeys`
 - Usage plan detail: `GetUsagePlan`, `UpdateUsagePlan`
-- Model updates and templates: `UpdateModel`, `GetModelTemplate`
+- Model templates: `GetModelTemplate`
 - Gateway Responses (the entire family: `PutGatewayResponse`, `GetGatewayResponse`, etc.)
 - Documentation parts and versions (the entire family, 10 operations)
 - VPC Links (5 operations)
@@ -109,26 +203,11 @@ curl http://localhost:4566/restapis/$API_ID/dev/_user_request_/users
 
 Both HTTP and WebSocket protocol types are supported for the management plane. WebSocket data-plane (actual connection handling) is not yet implemented.
 
-### Supported Operations
-
-| Category | Operations |
-|---|---|
-| **APIs** | CreateApi, GetApi, GetApis, UpdateApi, DeleteApi |
-| **Routes** | CreateRoute, GetRoute, GetRoutes, UpdateRoute, DeleteRoute |
-| **Route Responses** | CreateRouteResponse, GetRouteResponse, GetRouteResponses, UpdateRouteResponse, DeleteRouteResponse |
-| **Integrations** | CreateIntegration, GetIntegration, GetIntegrations, UpdateIntegration, DeleteIntegration |
-| **Integration Responses** | CreateIntegrationResponse, GetIntegrationResponse, GetIntegrationResponses, UpdateIntegrationResponse, DeleteIntegrationResponse |
-| **Authorizers** | CreateAuthorizer, GetAuthorizer, GetAuthorizers, UpdateAuthorizer, DeleteAuthorizer |
-| **Stages** | CreateStage, GetStage, GetStages, UpdateStage, DeleteStage |
-| **Deployments** | CreateDeployment, GetDeployment, GetDeployments, UpdateDeployment, DeleteDeployment |
-| **Models** | CreateModel, GetModel, GetModels, UpdateModel, DeleteModel |
-| **Tags** | TagResource, UntagResource, GetTags |
-
 ### Not Implemented
 
 - WebSocket data-plane: actual WebSocket connection handling, `@connections` management API
 - `ReimportApi`, `ExportApi`, `GetApiMapping`, `CreateApiMapping`, `DeleteApiMapping`
-- `GetDomainName`, `CreateDomainName`, `DeleteDomainName`
+- v2 domain names: `GetDomainName`, `CreateDomainName`, `DeleteDomainName` (v1 domain name operations are supported)
 - `CreateVpcLink`, `GetVpcLink`, `GetVpcLinks`, `UpdateVpcLink`, `DeleteVpcLink`
 
 ### Examples

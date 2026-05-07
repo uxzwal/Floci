@@ -5,25 +5,27 @@
 
 ## Supported Actions
 
-| Action | Description |
-|---|---|
-| `CreateSecret` | Create a new secret |
-| `GetSecretValue` | Retrieve the current secret value |
-| `PutSecretValue` | Update the secret value (new version) |
-| `UpdateSecret` | Update secret metadata or value |
-| `DescribeSecret` | Get secret metadata and version info |
-| `ListSecrets` | List all secrets |
-| `DeleteSecret` | Delete a secret (with recovery window) |
-| `RotateSecret` | Trigger secret rotation via a Lambda |
-| `ListSecretVersionIds` | List all versions of a secret |
-| `UpdateSecretVersionStage` | Move a staging label between versions |
-| `BatchGetSecretValue` | Retrieve multiple secret values in one call |
-| `GetRandomPassword` | Generate a random password |
-| `GetResourcePolicy` | Get the resource policy |
-| `PutResourcePolicy` | Attach a resource policy |
-| `DeleteResourcePolicy` | Remove the resource policy |
-| `TagResource` | Tag a secret |
-| `UntagResource` | Remove tags |
+<!-- floci:actions:start -->
+| Action |
+| --- |
+| `CreateSecret` |
+| `GetSecretValue` |
+| `PutSecretValue` |
+| `UpdateSecret` |
+| `DescribeSecret` |
+| `ListSecrets` |
+| `DeleteSecret` |
+| `RotateSecret` |
+| `TagResource` |
+| `UntagResource` |
+| `ListSecretVersionIds` |
+| `GetResourcePolicy` |
+| `GetRandomPassword` |
+| `BatchGetSecretValue` |
+| `DeleteResourcePolicy` |
+| `PutResourcePolicy` |
+| `UpdateSecretVersionStage` |
+<!-- floci:actions:end -->
 
 ## Configuration
 

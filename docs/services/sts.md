@@ -4,15 +4,17 @@
 
 ## Supported Actions
 
-| Action | Description |
-|---|---|
-| `GetCallerIdentity` | Returns the account ID, user ID, and ARN |
-| `AssumeRole` | Assume an IAM role, returns temporary credentials |
-| `AssumeRoleWithWebIdentity` | Assume a role using a web identity token (OIDC) |
-| `AssumeRoleWithSAML` | Assume a role using a SAML assertion |
-| `GetSessionToken` | Get temporary credentials for an IAM user |
-| `GetFederationToken` | Get temporary credentials for a federated user |
-| `DecodeAuthorizationMessage` | Decode an encoded authorization failure message |
+<!-- floci:actions:start -->
+| Action |
+| --- |
+| `AssumeRole` |
+| `GetCallerIdentity` |
+| `GetSessionToken` |
+| `AssumeRoleWithWebIdentity` |
+| `AssumeRoleWithSAML` |
+| `GetFederationToken` |
+| `DecodeAuthorizationMessage` |
+<!-- floci:actions:end -->
 
 ## Examples
 

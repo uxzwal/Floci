@@ -99,10 +99,38 @@ ln -s AGENT.md COPILOT.md
 5. Register a `ServiceDescriptor` in `ResolvedServiceCatalog`
 6. Wire controller/handler dispatch for the service
 7. Add integration tests in `*IntegrationTest.java`
+8. Register the service in `tools/docs/services.yaml` and run `make docs-sync` (see below).
 
 `ServiceRegistry`, `ServiceEnabledFilter`, and `StorageFactory` now resolve service metadata from the descriptor catalog. Adding a service should not require new service-keyed switch statements in those consumers.
 
 Always implement the **real AWS wire protocol** — never invent custom endpoints. The AWS SDK must work against Floci without modification.
+
+## Documentation: Action Tables
+
+The "Supported Actions" table on every `docs/services/*.md` page is auto-generated from handler source code. The generator extracts action names from `case "X" ->` arms in switch handlers and from `@GET/@POST/@PUT/@DELETE/@PATCH` methods in JAX-RS controllers, then rewrites the table inside marker comments:
+
+```markdown
+<!-- floci:actions:start -->
+| Action |
+| --- |
+| `CreateThing` |
+<!-- floci:actions:end -->
+```
+
+After adding or modifying a handler:
+
+```bash
+make docs-sync     # Regenerate all action tables. Idempotent.
+```
+
+CI runs `make docs-check` and fails any PR where the regenerated tables differ from what's committed. If you skip the regen step, the failure message tells you to run it.
+
+**Rules of the road:**
+
+- Don't hand-edit content between the `<!-- floci:actions:start -->` and `<!-- floci:actions:end -->` markers — the next regen will overwrite it.
+- The table is action names only — no description column. AWS action names are self-documenting (`CreateSecret`, `ListFunctions`), and maintaining descriptions alongside auto-generated names created drift and typo bugs with no meaningful payoff.
+- New services must be registered in `tools/docs/services.yaml` before `docs-sync` will populate them. Adding a new top-level `*Handler.java` without registering its service triggers a CI warning.
+- Run `make docs-test` to exercise the regen logic against fixtures in `tools/docs/fixtures/`.
 
 ## Pull Request Guidelines
 

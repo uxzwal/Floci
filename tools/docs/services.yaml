@@ -1,0 +1,226 @@
+# Registry of services whose action tables are auto-generated.
+# Spec: ideas/auto-generated-action-tables.spec.md
+#
+# Each entry:
+#   service : free-form key, used in error messages
+#   doc     : path (from repo root) to the markdown page
+#   sources : list of { path, mode } — mode is 'switch' or 'rest'
+#             empty list means the service is intentionally excluded (no markers)
+
+- service: s3
+  doc: docs/services/s3.md
+  sources: []  # Skip: dispatch is by query-string inside controller methods, not @Path-per-action. Tracked for refactor.
+
+- service: secretsmanager
+  doc: docs/services/secrets-manager.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/secretsmanager/SecretsManagerJsonHandler.java, mode: switch }
+
+- service: sns
+  doc: docs/services/sns.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/sns/SnsJsonHandler.java,  mode: switch }
+    - { path: src/main/java/io/github/hectorvent/floci/services/sns/SnsQueryHandler.java, mode: switch }
+
+- service: lambda
+  doc: docs/services/lambda.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaController.java,                mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaTagController.java,             mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaLayerController.java,           mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaConcurrencyController.java,     mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaCodeSigningController.java,     mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaUrlController.java,             mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/lambda/LambdaEventInvokeController.java,     mode: rest }
+    # Excluded: ApiGatewayController and LambdaUrlInvocationController are request-execution proxies, not management API.
+
+- service: acm
+  doc: docs/services/acm.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/acm/AcmJsonHandler.java, mode: switch }
+
+- service: athena
+  doc: docs/services/athena.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/athena/AthenaJsonHandler.java, mode: switch }
+
+- service: cloudformation
+  doc: docs/services/cloudformation.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/cloudformation/CloudFormationQueryHandler.java, mode: switch }
+
+- service: dynamodb
+  doc: docs/services/dynamodb.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/dynamodb/DynamoDbJsonHandler.java,        mode: switch }
+    - { path: src/main/java/io/github/hectorvent/floci/services/dynamodb/DynamoDbStreamsJsonHandler.java, mode: switch }
+
+- service: elasticache
+  doc: docs/services/elasticache.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/elasticache/ElastiCacheQueryHandler.java, mode: switch }
+
+- service: eventbridge
+  doc: docs/services/eventbridge.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/eventbridge/EventBridgeHandler.java, mode: switch }
+
+- service: firehose
+  doc: docs/services/firehose.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/firehose/FirehoseJsonHandler.java, mode: switch }
+
+- service: kinesis
+  doc: docs/services/kinesis.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/kinesis/KinesisJsonHandler.java, mode: switch }
+
+- service: kms
+  doc: docs/services/kms.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/kms/KmsJsonHandler.java, mode: switch }
+
+- service: rds
+  doc: docs/services/rds.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/rds/RdsQueryHandler.java, mode: switch }
+
+- service: sqs
+  doc: docs/services/sqs.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/sqs/SqsJsonHandler.java,  mode: switch }
+    - { path: src/main/java/io/github/hectorvent/floci/services/sqs/SqsQueryHandler.java, mode: switch }
+
+- service: ssm
+  doc: docs/services/ssm.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/ssm/SsmJsonHandler.java, mode: switch }
+
+- service: ec2messages
+  doc: docs/services/ssm.md
+  handler: src/main/java/io/github/hectorvent/floci/services/ssm/Ec2MessagesJsonHandler.java
+  sources: []  # Internal SSM agent protocol (AmazonEC2MessageDeliveryService / ssmmessages) — not a user-facing management API.
+
+- service: transfer
+  doc: docs/services/transfer.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/transfer/TransferHandler.java, mode: switch }
+
+- service: stepfunctions
+  doc: docs/services/step-functions.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/stepfunctions/StepFunctionsJsonHandler.java, mode: switch }
+
+- service: sts
+  doc: docs/services/sts.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/iam/StsQueryHandler.java, mode: switch }
+
+- service: iam
+  doc: docs/services/iam.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/iam/IamQueryHandler.java, mode: switch }
+
+- service: elbv2
+  doc: docs/services/elb.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/elbv2/ElbV2QueryHandler.java, mode: switch }
+
+- service: ec2
+  doc: docs/services/ec2.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/ec2/Ec2QueryHandler.java, mode: switch }
+
+- service: autoscaling
+  doc: docs/services/autoscaling.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/autoscaling/AutoScalingQueryHandler.java, mode: switch }
+
+- service: codebuild
+  doc: docs/services/codebuild.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/codebuild/CodeBuildJsonHandler.java, mode: switch }
+
+- service: codedeploy
+  doc: docs/services/codedeploy.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/codedeploy/CodeDeployJsonHandler.java, mode: switch }
+
+- service: ecs
+  doc: docs/services/ecs.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/ecs/EcsJsonHandler.java, mode: switch }
+
+- service: glue
+  doc: docs/services/glue.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/glue/GlueJsonHandler.java, mode: switch }
+
+- service: cloudwatch
+  doc: docs/services/cloudwatch.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/cloudwatch/logs/CloudWatchLogsHandler.java,             mode: switch }
+    - { path: src/main/java/io/github/hectorvent/floci/services/cloudwatch/metrics/CloudWatchMetricsJsonHandler.java,   mode: switch }
+    - { path: src/main/java/io/github/hectorvent/floci/services/cloudwatch/metrics/CloudWatchMetricsQueryHandler.java,  mode: switch }
+
+- service: apigateway
+  doc: docs/services/api-gateway.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/apigateway/ApiGatewayController.java,            mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/apigatewayv2/ApiGatewayV2JsonHandler.java,        mode: switch }
+    # Excluded: ApiGatewayAwsExecuteController, ApiGatewayExecuteController, ApiGatewayUserRequestController are request-execution proxies, not management API.
+
+- service: appconfig
+  doc: docs/services/appconfig.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/appconfig/AppConfigController.java,     mode: rest }
+    - { path: src/main/java/io/github/hectorvent/floci/services/appconfig/AppConfigDataController.java, mode: rest }
+
+- service: bedrockruntime
+  doc: docs/services/bedrock-runtime.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/bedrockruntime/BedrockRuntimeController.java, mode: rest }
+
+- service: cognito
+  doc: docs/services/cognito.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/cognito/CognitoJsonHandler.java, mode: switch }
+    # Excluded: CognitoOAuthController and CognitoWellKnownController are OIDC endpoints, not AWS management API.
+
+- service: ecr
+  doc: docs/services/ecr.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/ecr/EcrJsonHandler.java, mode: switch }
+    # Excluded: EcrGcController is an internal GC trigger, not AWS management API.
+
+- service: eks
+  doc: docs/services/eks.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/eks/EksController.java, mode: rest }
+
+- service: msk
+  doc: docs/services/msk.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/msk/MskController.java, mode: rest }
+
+- service: opensearch
+  doc: docs/services/opensearch.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/opensearch/OpenSearchController.java, mode: rest }
+
+- service: scheduler
+  doc: docs/services/scheduler.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/scheduler/SchedulerController.java, mode: rest }
+
+- service: ses
+  doc: docs/services/ses.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/ses/SesQueryHandler.java, mode: switch }
+    - { path: src/main/java/io/github/hectorvent/floci/services/ses/SesController.java,   mode: rest   }
+    # Excluded: SesInspectionController is internal-only mailbox inspection, not AWS API.
+
+- service: resourcegroupstagging
+  doc: docs/services/resource-groups-tagging.md
+  sources:
+    - { path: src/main/java/io/github/hectorvent/floci/services/resourcegroupstagging/ResourceGroupsTaggingJsonHandler.java, mode: switch }
