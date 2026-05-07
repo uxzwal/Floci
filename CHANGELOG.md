@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **elbv2:** Lambda target type support — ALB listeners forward requests to Lambda functions using the full ALB→Lambda event format (`httpMethod`, `path`, `queryStringParameters`, `headers`, `body`, `isBase64Encoded`); Lambda response fields (`statusCode`, `headers`, `multiValueHeaders`, `body`, `isBase64Encoded`) are mapped back to HTTP; Lambda targets always report as healthy in `DescribeTargetHealth`
+- **elbv2:** Lambda target type — ALB listeners forward requests to Lambda functions using the full ALB→Lambda event format (`httpMethod`, `path`, `queryStringParameters`, `multiValueQueryStringParameters`, `headers`, `multiValueHeaders`, `body`, `isBase64Encoded`); Lambda→ALB response mapping (`statusCode`, `headers`, `multiValueHeaders`, `body`, `isBase64Encoded`); Lambda target groups always report as healthy in `DescribeTargetHealth` without HTTP probing
+- **ssm:** Run Command — `SendCommand`, `GetCommandInvocation`, `ListCommands`, `ListCommandInvocations`, `CancelCommand`, `DescribeInstanceInformation`; `UpdateInstanceInformation` (agent registration); `ec2messages` polling protocol (`GetMessages`, `AcknowledgeMessage`, `SendReply`, `FailMessage`, `DeleteMessage`, `GetEndpoint`) so the real `amazon-ssm-agent` running inside EC2 containers can register, receive commands, and report output
+- **codedeploy:** Server platform (Phase 4) — on-premises instance management (`RegisterOnPremisesInstance`, `DeregisterOnPremisesInstance`, `GetOnPremisesInstance`, `BatchGetOnPremisesInstances`, `ListOnPremisesInstances`, `AddTagsToOnPremisesInstances`, `RemoveTagsFromOnPremisesInstances`); Server AppSpec YAML parsing; EC2 and on-premises instance resolution by tag filters; full lifecycle event execution (`ApplicationStop` → `DownloadBundle` → `BeforeInstall` → `Install` → `AfterInstall` → `ApplicationStart` → `ValidateService`); SSM Run Command integration for hook script execution with graceful degradation when SSM is unavailable; per-instance `InstanceTarget` tracking in `ListDeploymentTargets`/`BatchGetDeploymentTargets`
 
 ## [1.5.12] - 2026-05-04
 
