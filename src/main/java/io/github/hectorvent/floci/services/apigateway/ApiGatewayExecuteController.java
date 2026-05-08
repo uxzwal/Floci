@@ -1,6 +1,7 @@
 package io.github.hectorvent.floci.services.apigateway;
 
 import io.github.hectorvent.floci.core.common.AwsArnUtils;
+import io.github.hectorvent.floci.core.common.AwsErrorResponse;
 import io.github.hectorvent.floci.core.common.AwsException;
 import io.github.hectorvent.floci.core.common.RegionResolver;
 import io.github.hectorvent.floci.services.apigateway.model.ApiGatewayResource;
@@ -94,7 +95,7 @@ public class ApiGatewayExecuteController {
     private Response handlePostToConnection(String connectionId, byte[] body) {
         if (body != null && body.length > MAX_CONNECTIONS_PAYLOAD_BYTES) {
             return Response.status(413)
-                    .entity("{\"message\":\"Payload too large\",\"__type\":\"PayloadTooLargeException\"}")
+                    .entity(new AwsErrorResponse("PayloadTooLargeException", "Payload too large"))
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
@@ -103,7 +104,7 @@ public class ApiGatewayExecuteController {
             return Response.ok().build();
         } catch (IllegalStateException e) {
             return Response.status(410)
-                    .entity("{\"message\":\"GoneException\",\"__type\":\"GoneException\"}")
+                    .entity(new AwsErrorResponse("GoneException", "GoneException"))
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
@@ -113,7 +114,7 @@ public class ApiGatewayExecuteController {
         ConnectionInfo info = webSocketConnectionManager.getConnectionInfo(connectionId);
         if (info == null) {
             return Response.status(410)
-                    .entity("{\"message\":\"GoneException\",\"__type\":\"GoneException\"}")
+                    .entity(new AwsErrorResponse("GoneException", "GoneException"))
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
@@ -133,7 +134,7 @@ public class ApiGatewayExecuteController {
             return Response.noContent().build();
         } catch (IllegalStateException e) {
             return Response.status(410)
-                    .entity("{\"message\":\"GoneException\",\"__type\":\"GoneException\"}")
+                    .entity(new AwsErrorResponse("GoneException", "GoneException"))
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
