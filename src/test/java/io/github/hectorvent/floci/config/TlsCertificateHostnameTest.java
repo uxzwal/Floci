@@ -191,7 +191,7 @@ class TlsCertificateHostnameTest {
         CertificateGenerator gen = new CertificateGenerator();
         CertificateGenerator.GeneratedCertificate generated = gen.generateCertificate(
             "localhost", 
-            List.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost"), 
+            List.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost", "localhost.floci.io", "*.localhost.floci.io"), 
             KeyAlgorithm.RSA_2048);
         Files.writeString(certFile, generated.certificatePem());
         Files.writeString(keyFile, generated.privateKeyPem());
@@ -228,7 +228,8 @@ class TlsCertificateHostnameTest {
         X509Certificate cert = parseCertificate(certFile);
         List<String> sans = extractSansFromCertificate(cert);
         
-        Set<String> expectedSans = Set.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost");
+        Set<String> expectedSans = Set.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost",
+                "localhost.floci.io", "*.localhost.floci.io");
         Set<String> actualSans = new HashSet<>(sans);
         
         assertEquals(expectedSans, actualSans,
@@ -250,7 +251,8 @@ class TlsCertificateHostnameTest {
         X509Certificate cert = parseCertificate(certFile);
         List<String> sans = extractSansFromCertificate(cert);
         
-        Set<String> expectedSans = Set.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost");
+        Set<String> expectedSans = Set.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost",
+                "localhost.floci.io", "*.localhost.floci.io");
         Set<String> actualSans = new HashSet<>(sans);
         
         assertEquals(expectedSans, actualSans,

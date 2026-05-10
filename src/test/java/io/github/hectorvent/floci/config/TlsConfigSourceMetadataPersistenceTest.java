@@ -80,6 +80,10 @@ class TlsConfigSourceMetadataPersistenceTest {
             "Metadata should contain '0.0.0.0'");
         assertTrue(metadata.getHostnames().contains("*.localhost"), 
             "Metadata should contain '*.localhost'");
+        assertTrue(metadata.getHostnames().contains("localhost.floci.io"), 
+            "Metadata should contain 'localhost.floci.io'");
+        assertTrue(metadata.getHostnames().contains("*.localhost.floci.io"), 
+            "Metadata should contain '*.localhost.floci.io'");
     }
 
     /**

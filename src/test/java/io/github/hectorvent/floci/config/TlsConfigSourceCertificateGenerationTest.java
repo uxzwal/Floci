@@ -159,8 +159,8 @@ class TlsConfigSourceCertificateGenerationTest {
             "Certificate SANs should include default '0.0.0.0'");
         
         // Should not contain any custom hostnames
-        assertEquals(4, sans.size(), 
-            "Certificate SANs should contain exactly 4 default entries (localhost, 127.0.0.1, 0.0.0.0, *.localhost)");
+        assertEquals(6, sans.size(), 
+            "Certificate SANs should contain exactly 6 default entries (localhost, 127.0.0.1, 0.0.0.0, *.localhost, localhost.floci.io, *.localhost.floci.io)");
     }
 
     /**

@@ -76,7 +76,8 @@ public class TlsConfigSource implements ConfigSource {
                 // Extract current hostname configuration
                 List<String> customHostnames = extractCustomHostnames();
                 List<String> currentHostnames = new ArrayList<>();
-                currentHostnames.addAll(List.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost"));
+                currentHostnames.addAll(List.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost",
+                        "localhost.floci.io", "*.localhost.floci.io"));
                 currentHostnames.addAll(customHostnames);
                 
                 // Check if hostname configuration has changed
@@ -167,7 +168,8 @@ public class TlsConfigSource implements ConfigSource {
             // Extract custom hostnames and combine with defaults
             List<String> customHostnames = extractCustomHostnames();
             List<String> allSans = new ArrayList<>();
-            allSans.addAll(List.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost"));
+            allSans.addAll(List.of("localhost", "127.0.0.1", "0.0.0.0", "*.localhost",
+                    "localhost.floci.io", "*.localhost.floci.io"));
             allSans.addAll(customHostnames);
 
             CertificateGenerator gen = new CertificateGenerator();
