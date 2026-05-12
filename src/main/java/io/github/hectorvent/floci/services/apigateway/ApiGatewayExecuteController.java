@@ -1180,7 +1180,7 @@ public class ApiGatewayExecuteController {
      * Finds the best-matching resource for {@code requestPath}.
      * Priority: exact match > template path match (e.g. /items/{id}) > proxy+ wildcard.
      */
-    private ApiGatewayResource matchResource(List<ApiGatewayResource> resources, String requestPath) {
+    ApiGatewayResource matchResource(List<ApiGatewayResource> resources, String requestPath) {
         // 1. Exact match
         for (ApiGatewayResource r : resources) {
             if (requestPath.equals(r.getPath())) {
