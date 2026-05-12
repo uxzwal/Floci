@@ -1196,12 +1196,31 @@ public class ApiGatewayExecuteController {
             }
         }
         // 3. Proxy+ wildcard — {proxy+} matches any remaining path
+        // Pick the proxy+ resource whose parent path is the longest prefix of requestPath
+        ApiGatewayResource best = null;
+        int bestLen = -1;
         for (ApiGatewayResource r : resources) {
-            if (r.getPathPart() != null && r.getPathPart().contains("{")) {
-                return r;
+            if (r.getPathPart() == null || !r.getPathPart().contains("{")) continue;
+            String path = r.getPath();
+            if (path == null) continue;
+            // Parent path is everything before the last / (i.e. strip /{proxy+})
+            int lastSlash = path.lastIndexOf('/');
+            String parent = lastSlash > 0 ? path.substring(0, lastSlash) : "/";
+            if ("/".equals(parent)) {
+                // Root /{proxy+} — fallback if nothing more specific matches
+                if (best == null) {
+                    best = r;
+                    bestLen = 0;
+                }
+                continue;
+            }
+            String prefix = parent.endsWith("/") ? parent : parent + "/";
+            if (requestPath.startsWith(prefix) && parent.length() > bestLen) {
+                best = r;
+                bestLen = parent.length();
             }
         }
-        return null;
+        return best;
     }
 
     /**
