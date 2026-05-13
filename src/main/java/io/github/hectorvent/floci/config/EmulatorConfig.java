@@ -301,6 +301,7 @@ public interface EmulatorConfig {
         TransferServiceConfig transfer();
         TextractServiceConfig textract();
         PricingServiceConfig pricing();
+        CostExplorerServiceConfig ce();
     }
 
     interface TransferServiceConfig {
@@ -652,6 +653,20 @@ public interface EmulatorConfig {
          * {@code <path>/price-lists/<service>.json} are read in preference to the classpath copy.
          */
         Optional<String> snapshotPath();
+    }
+
+    interface CostExplorerServiceConfig {
+        @WithDefault("true")
+        boolean enabled();
+
+        /**
+         * Synthetic monthly USD credit applied as a {@code Credit} {@code RECORD_TYPE}
+         * row in {@code GetCostAndUsage} responses. The emitted credit is capped at
+         * the synthesized monthly usage so net cost never goes below zero.
+         * Defaults to zero (no credit emitted).
+         */
+        @WithDefault("0.0")
+        double creditUsdMonthly();
     }
 
     interface EcrServiceConfig {

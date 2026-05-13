@@ -257,12 +257,13 @@ All default images are configurable via environment variables, useful for pinnin
 | **Transfer Family** | In-process | Server lifecycle (`CreateServer` / `DeleteServer` / `StartServer` / `StopServer` / `UpdateServer`), user management, SSH public key import, and tagging |
 | **Textract** | In-process (stub) | API-compatible stubs for all operations; dummy block data with realistic shape and metadata; async job simulation with immediate SUCCEEDED status |
 | **Pricing (Price List Service)** | In-process + bundled static snapshot | `DescribeServices`, `GetAttributeValues`, `GetProducts`, `ListPriceLists`, `GetPriceListFileUrl`; pagination; filesystem override via `FLOCI_SERVICES_PRICING_SNAPSHOT_PATH` |
+| **Cost Explorer** | In-process; cost synthesized from Floci resource state × Pricing snapshot | `GetCostAndUsage` (full `Filter`/`GroupBy`/`Metrics`/`RECORD_TYPE`), `GetCostAndUsageWithResources`, `GetDimensionValues`, `GetTags`, RI/SP coverage+utilization stubs; CDI-discovered `ResourceUsageEnumerator` SPI for new services to emit cost lines without touching CE |
 
 > **Lambda, ElastiCache, RDS, MSK, ECS, EC2, EKS, OpenSearch, and CodeBuild** spin up real Docker containers and support IAM authentication and SigV4 request signing — the same auth flow as production AWS. **ECR** runs a shared `registry:2` container so the stock `docker` client can push and pull image bytes against repositories returned by the AWS-shaped control plane.
 >
 > For per-service operation counts and endpoint protocols, see the [Services Overview](https://floci.io/floci/services/) in the documentation site.
 
-**47 AWS services supported.**
+**48 AWS services supported.**
 
 ## Persistence & Storage Modes
 
