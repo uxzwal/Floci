@@ -260,3 +260,6 @@ floci:
       enabled: true
     pricing:
       enabled: true
+    ce:
+      enabled: true
+      credit-usd-monthly: 0.0
